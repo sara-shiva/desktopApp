@@ -3,7 +3,7 @@ My first try to code an app
 
 --> Not ready yet!
 
-A small app where you can interact with a cat, and bye that wy taking care of yourself
+A small app where you can interact with a cat, and bye that way take care of yourself
 
 preview of cats:
 
