@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 import time
 import threading
 from datetime import timedelta
@@ -73,10 +74,20 @@ class App:
         self.clock_label = tk.Label(root, font=("Arial", 14), fg="white")
         self.clock_label.pack(pady=5)
 
-        self.hunger_label = tk.Label(root, text="Hunger: 1:00:00", font=("Arial", 14))
-        self.hunger_label.pack(pady=5)
-        self.happiness_label = tk.Label(root, text="Happiness: 1:00:00", font=("Arial", 14))
-        self.happiness_label.pack(pady=5)
+        # self.hunger_label = tk.Label(root, text="Hunger: 1:00:00", font=("Arial", 14))
+        # self.hunger_label.pack(pady=5)
+        # self.happiness_label = tk.Label(root, text="Happiness: 1:00:00", font=("Arial", 14))
+        # self.happiness_label.pack(pady=5)
+
+        self.hunger_label = tk.Label(root, text="Hunger", font=("Arial", 12))
+        self.hunger_label.pack()
+        self.hunger_bar = ttk.Progressbar(root, length=200, maximum=3600)
+        self.hunger_bar.pack(pady=5)
+
+        self.happiness_label = tk.Label(root, text="Happiness", font=("Arial", 12))
+        self.happiness_label.pack()
+        self.happiness_bar = ttk.Progressbar(root, length=200, maximum=3600)
+        self.happiness_bar.pack(pady=5)
 
         self.image_frame = tk.Frame(root, width=300, height=300)
         self.image_frame.pack(pady=10)
@@ -189,8 +200,11 @@ class App:
         return str(timedelta(seconds=seconds))
 
     def update_ui(self):
-        self.hunger_label.config(text=f"Hunger: {self.format_time(self.pet.hunger)}")
-        self.happiness_label.config(text=f"Happiness: {self.format_time(self.pet.happiness)}")
+        # self.hunger_label.config(text=f"Hunger: {self.format_time(self.pet.hunger)}")
+        # self.happiness_label.config(text=f"Happiness: {self.format_time(self.pet.happiness)}")
+
+        self.hunger_bar["value"] = self.pet.hunger
+        self.happiness_bar["value"] = self.pet.happiness
 
     def on_close(self):
         save_state(self.pet)
