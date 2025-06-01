@@ -62,8 +62,8 @@ class App:
         self.play_btn.pack(side="left", padx=10)
 
         # Load GIFs for day and night
-        self.day_gif_frames = self.load_gif("cat_day.gif")
-        self.night_gif_frames = self.load_gif("cat_night.gif")
+        self.day_gif_frames = self.load_gif("cat_is_chillin(11).gif")
+        self.night_gif_frames = self.load_gif("sleep.gif")
         self.pet_frames = self.day_gif_frames
         self.current_frame = 0
 
@@ -79,7 +79,7 @@ class App:
         i = 0
         while True:
             try:
-                frame = tk.PhotoImage(file="cat_is_chillin(11).gif", format=f"gif -index {i}")
+                frame = tk.PhotoImage(file=filename, format=f"gif -index {i}")
                 frames.append(frame)
                 i += 1
             except tk.TclError:
