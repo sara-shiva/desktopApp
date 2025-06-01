@@ -15,4 +15,5 @@ preview of cats:
 Python file to run
 
 Sources:
-Gif is from GIPHY
+preview cats made my own
+other cat from GIPHY
