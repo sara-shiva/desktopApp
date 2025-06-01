@@ -5,6 +5,7 @@ from datetime import timedelta
 import json
 import os
 import datetime
+from PIL import Image, ImageTk
 
 def save_state(pet, filename="save.json"):
     with open(filename, "w") as f:
@@ -67,12 +68,15 @@ class App:
         self.pet_frames = self.day_gif_frames
         self.current_frame = 0
 
+        self.night_static_image = ImageTk.PhotoImage(Image.open("cat_sleeps.png").resize((300, 300)))
+
         self.animate_gif()
 
         self.update_thread = threading.Thread(target=self.update_loop, daemon=True)
         self.update_thread.start()
 
         self.update_clock()
+
 
     def load_gif(self, filename):
         frames = []
@@ -105,7 +109,8 @@ class App:
             self.pet_frames = self.day_gif_frames
         else:
             bg = "#2C3E50"
-            self.pet_frames = self.night_gif_frames
+            self.pet_frames = []  # Clear to avoid animation
+            self.pet_label.config(image=self.night_static_image)
 
         widgets = [
             self.root, self.clock_label, self.hunger_label, self.happiness_label,
