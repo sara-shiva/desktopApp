@@ -4,8 +4,8 @@ My first try to code an app
 Digital Pet App
 
 preview of cats:
-![Digital Pet](cat_is_chillin.gif)
-![Digital Pet](cat_sleeps.gif)
+![Digital Pet](cat_is_chillin(11).gif)
+![Digital Pet](sleep.gif)
 
 
 Python file to run
