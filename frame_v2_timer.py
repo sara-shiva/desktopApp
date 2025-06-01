@@ -95,32 +95,36 @@ class App:
         self.pet = Tamagotchi()
         load_state(self.pet)
 
-        # UI Elements
-        self.clock_label = tk.Label(root, font=("Arial", 14), fg="white")
-        self.clock_label.pack(pady=5)
-
-        # self.hunger_label = tk.Label(root, text="Hunger: 1:00:00", font=("Arial", 14))
-        # self.hunger_label.pack(pady=5)
-        # self.happiness_label = tk.Label(root, text="Happiness: 1:00:00", font=("Arial", 14))
-        # self.happiness_label.pack(pady=5)
-
-        self.hunger_label = tk.Label(root, text="Hunger", font=("Arial", 12))
-        self.hunger_label.pack()
-        self.hunger_bar = ttk.Progressbar(root, length=200, maximum=3600)
-        self.hunger_bar.pack(pady=5)
-
-        self.happiness_label = tk.Label(root, text="Happiness", font=("Arial", 12))
-        self.happiness_label.pack()
-        self.happiness_bar = ttk.Progressbar(root, length=200, maximum=3600)
-        self.happiness_bar.pack(pady=5)
-
+            # --- IMAGE FRAME for PET and WEATHER GIF ---
         self.image_frame = tk.Frame(root, width=300, height=300)
-        self.image_frame.pack(pady=10)
+        self.image_frame.pack(pady=(10, 0))
+
         self.pet_label = tk.Label(self.image_frame, width=300, height=300)
         self.pet_label.pack()
 
+        self.sunny_label = tk.Label(self.image_frame, bg=self.root["bg"])
+        self.sunny_label.place(relx=1.0, rely=0.0, anchor="ne")
+
+        # --- INFO/BARS FRAME BELOW GIFs ---
+        self.info_frame = tk.Frame(root)
+        self.info_frame.pack(pady=10)
+
+        self.clock_label = tk.Label(self.info_frame, font=("Arial", 14), fg="white")
+        self.clock_label.pack(pady=2)
+
+        self.hunger_label = tk.Label(self.info_frame, text="Hunger", font=("Arial", 12))
+        self.hunger_label.pack()
+        self.hunger_bar = ttk.Progressbar(self.info_frame, length=200, maximum=3600)
+        self.hunger_bar.pack(pady=2)
+
+        self.happiness_label = tk.Label(self.info_frame, text="Happiness", font=("Arial", 12))
+        self.happiness_label.pack()
+        self.happiness_bar = ttk.Progressbar(self.info_frame, length=200, maximum=3600)
+        self.happiness_bar.pack(pady=2)
+
+        # --- BUTTONS at very bottom ---
         self.button_frame = tk.Frame(root)
-        self.button_frame.pack(side="bottom", pady=5)
+        self.button_frame.pack(pady=10)
 
         self.feed_btn = tk.Button(self.button_frame, text="Feed", command=self.feed, font=("Arial", 12))
         self.feed_btn.pack(side="left", padx=10)
@@ -128,18 +132,26 @@ class App:
         self.play_btn = tk.Button(self.button_frame, text="Play", command=self.play, font=("Arial", 12))
         self.play_btn.pack(side="left", padx=10)
 
+
         # Load GIFs for day and night
         self.day_gif_frames = self.load_gif("cat_is_chillin(11).gif")
         self.night_gif_frames = self.load_gif("sleep.gif")
         self.pet_frames = self.day_gif_frames
         self.current_frame = 0
+        # Load GIF for Sunny times
+        self.sunny_gif_frames = self.load_gif("shiny_sun(1).gif")
+        self.sunny_label = tk.Label(root, bg=self.root["bg"]) 
+        self.sunny_label.place(relx=1.0, rely=0.0, anchor="ne")  # Top-right corner
+        self.sunny_frame = 0
 
         self.night_static_image = ImageTk.PhotoImage(Image.open("cat_sleeps.png").resize((300, 300)))
 
         self.animate_gif()
+        self.animate_sunny_gif()
 
-        self.update_thread = threading.Thread(target=self.update_loop, daemon=True)
-        self.update_thread.start()
+        # self.update_thread = threading.Thread(target=self.update_loop, daemon=True)
+        # self.update_thread.start()
+        self.update_loop()
 
         self.update_clock()
 
@@ -194,6 +206,12 @@ class App:
             self.pet_frames = []  # Clear to avoid animation
             self.pet_label.config(image=self.night_static_image)
 
+        if "sun" in condition.lower():
+            self.sunny_label.place(relx=1.0, rely=0.0, anchor="ne")  # Show
+            self.sunny_label.configure(bg=bg)
+        else:
+            self.sunny_label.place_forget()
+
         widgets = [
             self.root, self.clock_label, self.hunger_label, self.happiness_label,
             self.image_frame, self.pet_label, self.button_frame,
@@ -208,6 +226,12 @@ class App:
             self.current_frame = (self.current_frame + 1) % len(self.pet_frames)
         self.root.after(300, self.animate_gif)
 
+    def animate_sunny_gif(self):
+        if self.sunny_gif_frames:
+            self.sunny_label.configure(image=self.sunny_gif_frames[self.sunny_frame])
+            self.sunny_frame = (self.sunny_frame + 1) % len(self.sunny_gif_frames)
+        self.root.after(300, self.animate_sunny_gif)
+
     def feed(self):
         self.pet.feed()
         self.update_ui()
@@ -217,11 +241,11 @@ class App:
         self.update_ui()
 
     def update_loop(self):
-        while True:
-            time.sleep(1)
-            self.pet.decay()
-            # self.update_ui()
-            self.root.after(0, self.update_ui) 
+       # while True:
+            # time.sleep(1)
+        self.pet.decay()
+        self.update_ui()
+        self.root.after(1000, self.update_ui) 
 
     def format_time(self, seconds):
         return str(timedelta(seconds=seconds))
