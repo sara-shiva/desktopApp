@@ -6,6 +6,34 @@ import json
 import os
 import datetime
 from PIL import Image, ImageTk
+import requests
+
+######## save and loads ###########
+
+WEATHER_FILE = "weather_cache.json"
+
+def fetch_temperature():
+    try:
+        response = requests.get("https://wttr.in/Berlin?format=%t")
+        if response.status_code == 200:
+            temp = response.text.strip()
+            save_temperature_to_file(temp)
+            return temp
+    except:
+        pass
+    return load_cached_temperature()
+
+def save_temperature_to_file(temp):
+    with open(WEATHER_FILE, "w") as f:
+        json.dump({"temperature": temp, "timestamp": time.time()}, f)
+
+def load_cached_temperature():
+    if os.path.exists(WEATHER_FILE):
+        with open(WEATHER_FILE) as f:
+            data = json.load(f)
+            if time.time() - data["timestamp"] < 1800:
+                return data["temperature"]
+    return "N/A"
 
 def save_state(pet, filename="save.json"):
     with open(filename, "w") as f:
@@ -16,6 +44,8 @@ def load_state(pet, filename="save.json"):
         with open(filename) as f:
             data = json.load(f)
             pet.__dict__.update(data)
+
+######### classes #################
 
 class Tamagotchi:
     def __init__(self):
@@ -89,11 +119,26 @@ class App:
             except tk.TclError:
                 break
         return frames
+    
+
+    def get_temperature_wttr():
+        try:
+            response = requests.get("https://wttr.in/Berlin?format=%t")
+            if response.status_code == 200:
+                return response.text.strip()
+            else:
+                return "N/A"
+        except:
+            return "N/A"
 
     def update_clock(self):
         now = datetime.datetime.now()
         time_str = now.strftime("%H:%M:%S")
-        self.clock_label.config(text=f"Time: {time_str}")
+        # self.clock_label.config(text=f"Time: {time_str}")
+
+        temp = fetch_temperature()
+        self.clock_label.config(text=f"Time: {time_str} | Berlin: {temp}")
+
         self.update_theme(now.hour)
         self.root.after(1000, self.update_clock)
 
