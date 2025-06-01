@@ -95,8 +95,11 @@ class App:
         self.pet = Tamagotchi()
         load_state(self.pet)
 
+        style = ttk.Style()
+        style.theme_use('default')
+
             # --- IMAGE FRAME for PET and WEATHER GIF ---
-        self.image_frame = tk.Frame(root, width=300, height=300)
+        self.image_frame = tk.Frame(root, width=300, height=300, bg="#AD62CA")
         self.image_frame.pack(pady=(10, 0))
 
         self.pet_label = tk.Label(self.image_frame, width=300, height=300)
@@ -106,30 +109,32 @@ class App:
         self.sunny_label.place(relx=1.0, rely=0.0, anchor="ne")
 
         # --- INFO/BARS FRAME BELOW GIFs ---
-        self.info_frame = tk.Frame(root)
+        self.info_frame = tk.Frame(root, bg="#AD62CA")
         self.info_frame.pack(pady=10)
 
-        self.clock_label = tk.Label(self.info_frame, font=("Arial", 14), fg="white")
+        self.clock_label = tk.Label(self.info_frame, font=("Arial", 14), bg="#AD62CA", fg="#FCC3F9")
         self.clock_label.pack(pady=2)
 
-        self.hunger_label = tk.Label(self.info_frame, text="Hunger", font=("Arial", 12))
+        self.hunger_label = tk.Label(self.info_frame, text="Hunger", font=("Arial", 12), bg="#AD62CA", fg="#FCC3F9")
         self.hunger_label.pack()
-        self.hunger_bar = ttk.Progressbar(self.info_frame, length=200, maximum=3600)
+        style.configure("Hunger.Horizontal.TProgressbar", troughcolor='#ddd', background='#5F3470')
+        self.hunger_bar = ttk.Progressbar(self.info_frame, length=200, maximum=3600, style="Hunger.Horizontal.TProgressbar")
         self.hunger_bar.pack(pady=2)
 
-        self.happiness_label = tk.Label(self.info_frame, text="Happiness", font=("Arial", 12))
+        self.happiness_label = tk.Label(self.info_frame, text="Happiness", font=("Arial", 12), bg="#AD62CA", fg="#FCC3F9")
         self.happiness_label.pack()
-        self.happiness_bar = ttk.Progressbar(self.info_frame, length=200, maximum=3600)
+        style.configure("happiness.Horizontal.TProgressbar", troughcolor='#ddd', background="#5F3470")
+        self.happiness_bar = ttk.Progressbar(self.info_frame, length=200, maximum=3600, style="happiness.Horizontal.TProgressbar")
         self.happiness_bar.pack(pady=2)
 
         # --- BUTTONS at very bottom ---
         self.button_frame = tk.Frame(root)
         self.button_frame.pack(pady=10)
 
-        self.feed_btn = tk.Button(self.button_frame, text="Feed", command=self.feed, font=("Arial", 12))
+        self.feed_btn = tk.Button(self.button_frame, text="Feed", command=self.feed, font=("Arial", 12), bg="#AD62CA", fg="#FCC3F9")
         self.feed_btn.pack(side="left", padx=10)
 
-        self.play_btn = tk.Button(self.button_frame, text="Play", command=self.play, font=("Arial", 12))
+        self.play_btn = tk.Button(self.button_frame, text="Play", command=self.play, font=("Arial", 12), bg="#AD62CA", fg="#FCC3F9")
         self.play_btn.pack(side="left", padx=10)
 
 
@@ -193,16 +198,16 @@ class App:
 
     def update_theme(self, hour, condition):
         if 6 <= hour < 12:
-            bg = "#FFF5BA"
+            bg = "#64F7CB"
             self.pet_frames = self.day_gif_frames
         elif 12 <= hour < 18:
-            bg = "#87CEFA"
+            bg = "#75C8F8"
             self.pet_frames = self.day_gif_frames
         elif 18 <= hour < 21:
-            bg = "#FFDAB9"
+            bg = "#F381B0"
             self.pet_frames = self.day_gif_frames
         else:
-            bg = "#2C3E50"
+            bg = "#5E3683"
             self.pet_frames = []  # Clear to avoid animation
             self.pet_label.config(image=self.night_static_image)
 
