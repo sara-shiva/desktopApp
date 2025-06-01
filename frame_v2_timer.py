@@ -36,6 +36,31 @@ def load_cached_temperature():
                 return data["temperature"]
     return "N/A"
 
+WEATHER_CONDITION_FILE = "weather_condition_cache.json"
+
+def fetch_condition():
+    try:
+        response = requests.get("https://wttr.in/Berlin?format=%C")  # %C = full weather condition like "Partly cloudy"
+        if response.status_code == 200:
+            condition = response.text.strip()
+            save_condition_to_file(condition)
+            return condition
+    except:
+        pass
+    return load_cached_condition()
+
+def save_condition_to_file(condition):
+    with open(WEATHER_CONDITION_FILE, "w") as f:
+        json.dump({"condition": condition, "timestamp": time.time()}, f)
+
+def load_cached_condition():
+    if os.path.exists(WEATHER_CONDITION_FILE):
+        with open(WEATHER_CONDITION_FILE) as f:
+            data = json.load(f)
+            if time.time() - data["timestamp"] < 1800:  # 30 min cache
+                return data["condition"]
+    return "Unknown"
+
 def save_state(pet, filename="save.json"):
     with open(filename, "w") as f:
         json.dump(vars(pet), f)
@@ -148,12 +173,13 @@ class App:
         # self.clock_label.config(text=f"Time: {time_str}")
 
         temp = fetch_temperature()
-        self.clock_label.config(text=f"Time: {time_str} | Berlin: {temp}")
+        condition = fetch_condition()
+        self.clock_label.config(text=f"Time: {time_str} | Berlin: {temp} | {condition}")
 
-        self.update_theme(now.hour)
+        self.update_theme(now.hour, condition)
         self.root.after(1000, self.update_clock)
 
-    def update_theme(self, hour):
+    def update_theme(self, hour, condition):
         if 6 <= hour < 12:
             bg = "#FFF5BA"
             self.pet_frames = self.day_gif_frames
@@ -194,7 +220,8 @@ class App:
         while True:
             time.sleep(1)
             self.pet.decay()
-            self.update_ui()
+            # self.update_ui()
+            self.root.after(0, self.update_ui) 
 
     def format_time(self, seconds):
         return str(timedelta(seconds=seconds))
@@ -202,7 +229,6 @@ class App:
     def update_ui(self):
         # self.hunger_label.config(text=f"Hunger: {self.format_time(self.pet.hunger)}")
         # self.happiness_label.config(text=f"Happiness: {self.format_time(self.pet.happiness)}")
-
         self.hunger_bar["value"] = self.pet.hunger
         self.happiness_bar["value"] = self.pet.happiness
 
