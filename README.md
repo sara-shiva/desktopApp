@@ -1,9 +1,13 @@
 # desktopApp
 My first try to code an app
 
-Digital Pet App
+--> Not ready yet!
+
+A small app where you can interact with a cat, and bye that wy taking care of yourself
 
 preview of cats:
+
+
 ![Digital Pet](cat_is_chillin(11).gif)
 ![Digital Pet](sleep.gif)
 
