@@ -4,7 +4,7 @@ My first try to code an app
 --> Not ready yet!
 compile frame_v2_timer.py for the most recent version
 
-A small app where you can interact with a cat, and bye that way take care of yourself
+A small app where you can interact with a cat, and by that way take care of yourself
 
 preview of cats:
 
