@@ -95,6 +95,8 @@ class App:
         self.pet = Tamagotchi()
         load_state(self.pet)
 
+
+
         style = ttk.Style()
         style.theme_use('default')
 
@@ -109,19 +111,19 @@ class App:
         self.sunny_label.place(relx=1.0, rely=0.0, anchor="ne")
 
         # --- INFO/BARS FRAME BELOW GIFs ---
-        self.info_frame = tk.Frame(root, bg="#AD62CA")
+        self.info_frame = tk.Frame(root, bg=self.root["bg"])
         self.info_frame.pack(pady=10)
 
-        self.clock_label = tk.Label(self.info_frame, font=("Arial", 14), bg="#AD62CA", fg="#FCC3F9")
+        self.clock_label = tk.Label(self.info_frame, font=("Arial", 14), bg="#AD62CA", fg="#332632")
         self.clock_label.pack(pady=2)
 
-        self.hunger_label = tk.Label(self.info_frame, text="Hunger", font=("Arial", 12), bg="#AD62CA", fg="#FCC3F9")
+        self.hunger_label = tk.Label(self.info_frame, text="Hunger", font=("Arial", 12), bg="#AD62CA", fg="#332632")
         self.hunger_label.pack()
         style.configure("Hunger.Horizontal.TProgressbar", troughcolor='#ddd', background='#5F3470')
         self.hunger_bar = ttk.Progressbar(self.info_frame, length=200, maximum=3600, style="Hunger.Horizontal.TProgressbar")
         self.hunger_bar.pack(pady=2)
 
-        self.happiness_label = tk.Label(self.info_frame, text="Happiness", font=("Arial", 12), bg="#AD62CA", fg="#FCC3F9")
+        self.happiness_label = tk.Label(self.info_frame, text="Happiness", font=("Arial", 12), bg="#AD62CA", fg="#332632")
         self.happiness_label.pack()
         style.configure("happiness.Horizontal.TProgressbar", troughcolor='#ddd', background="#5F3470")
         self.happiness_bar = ttk.Progressbar(self.info_frame, length=200, maximum=3600, style="happiness.Horizontal.TProgressbar")
@@ -131,10 +133,10 @@ class App:
         self.button_frame = tk.Frame(root)
         self.button_frame.pack(pady=10)
 
-        self.feed_btn = tk.Button(self.button_frame, text="Feed", command=self.feed, font=("Arial", 12), bg="#AD62CA", fg="#FCC3F9")
+        self.feed_btn = tk.Button(self.button_frame, text="Feed", command=self.feed, font=("Arial", 12), bg="#AD62CA", fg="#332632")
         self.feed_btn.pack(side="left", padx=10)
 
-        self.play_btn = tk.Button(self.button_frame, text="Play", command=self.play, font=("Arial", 12), bg="#AD62CA", fg="#FCC3F9")
+        self.play_btn = tk.Button(self.button_frame, text="Play", command=self.play, font=("Arial", 12), bg="#AD62CA", fg="#332632")
         self.play_btn.pack(side="left", padx=10)
 
 
@@ -198,7 +200,7 @@ class App:
 
     def update_theme(self, hour, condition):
         if 6 <= hour < 12:
-            bg = "#64F7CB"
+            bg = "#EED232"
             self.pet_frames = self.day_gif_frames
         elif 12 <= hour < 18:
             bg = "#75C8F8"

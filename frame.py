@@ -83,31 +83,31 @@ class App:
         time_str = now.strftime("%H:%M:%S")
         self.clock_label.config(text=f"Time: {time_str}")
 
-        hour = now.hour
-        # Change background based on hour
-        if 6 <= hour < 12:
-            # Morning
-            bg_color = "#FFF5BA"  # soft yellow
-        elif 12 <= hour < 18:
-            # Afternoon
-            bg_color = "#87CEFA"  # sky blue
-        elif 18 <= hour < 21:
-            # Evening
-            bg_color = "#FFDAB9"  # peach
-        else:
-            # Night
-            bg_color = "#2C3E50"  # dark blue
+        # hour = now.hour
+        # # Change background based on hour
+        # if 6 <= hour < 12:
+        #     # Morning
+        #     bg_color = "#FFF5BA"  # soft yellow
+        # elif 12 <= hour < 18:
+        #     # Afternoon
+        #     bg_color = "#87CEFA"  # sky blue
+        # elif 18 <= hour < 21:
+        #     # Evening
+        #     bg_color = "#FFDAB9"  # peach
+        # else:
+        #     # Night
+        #     bg_color = "#2C3E50"  # dark blue
 
-        # Apply to root and all relevant widgets
-        self.root.configure(bg=bg_color)
-        self.clock_label.configure(bg=bg_color)
-        self.hunger_label.configure(bg=bg_color)
-        self.happiness_label.configure(bg=bg_color)
-        self.image_frame.configure(bg=bg_color)
-        self.pet_label.configure(bg=bg_color)
-        self.button_frame.configure(bg=bg_color)
-        self.feed_btn.configure(bg=bg_color)
-        self.play_btn.configure(bg=bg_color)
+        # # Apply to root and all relevant widgets
+        # self.root.configure(bg=bg_color)
+        # self.clock_label.configure(bg=bg_color)
+        # self.hunger_label.configure(bg=bg_color)
+        # self.happiness_label.configure(bg=bg_color)
+        # self.image_frame.configure(bg=bg_color)
+        # self.pet_label.configure(bg=bg_color)
+        # self.button_frame.configure(bg=bg_color)
+        # self.feed_btn.configure(bg=bg_color)
+        # self.play_btn.configure(bg=bg_color)
 
         self.root.after(1000, self.update_clock)
         
